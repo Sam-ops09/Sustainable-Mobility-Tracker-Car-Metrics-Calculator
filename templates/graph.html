@@ -1,0 +1,119 @@
+<!-- graph.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Company-wise Fuel Consumption Scatter Plot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/graph.css') }}">
+</head>
+
+<body>
+    <h1>Company-wise Fuel Efficiency{{ selected_company }}</h1>
+
+    <!-- Dropdown to select a specific MAKE -->
+    <div class="centered-container">
+        <div class="select-make-dropdown">
+            <form action="{{ url_for('graph_representation') }}" method="GET">
+                <label for="makeSelect">Select Make:</label>
+                <select id="makeSelect" name="selected_make">
+                    {% for make in makes|sort %}
+                        <option value="{{ make }}" {% if selected_make == make %}selected{% endif %}>{{ make }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="calculate-again-button">Show Scatter Plot</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Container for displaying the scatter plot -->
+    <div class="chart-container">
+        <canvas id="fuelConsumptionScatterPlot" width="800" height="600"></canvas>
+
+        {% if not selected_make %}
+            <p class="no-make-selected">Please select a make to display the scatter plot.</p>
+        {% endif %}
+    </div>
+
+    <!-- Container for the "Calculate Again"again button -->
+    <div class="calculate-again-container">
+        <!-- Create a link with the selected company as a URL parameter to navigate back to the index page -->
+        <a class="calculate-again-button" href="{{ url_for('index', selected_company=selected_company) }}">Calculate Again</a>
+    </div>    
+    
+    <!-- Include Chart.js library for chart rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const fuelConsumptionData = JSON.parse('{{ fuel_consumption_data | tojson | safe }}');
+        const selectedMake = '{{ selected_make }}';
+    
+        // Retrieve the company names and model data
+        const companyData = fuelConsumptionData[selectedMake];
+        const companyNames = Object.keys(companyData);
+    
+        // Create an array to store data points
+        const dataPoints = [];
+    
+        // Iterate through companies and models to create data points
+        for (const company of companyNames) {
+            const models = Object.keys(companyData[company]);
+            for (const model of models) {
+                const fuelConsumption = companyData[company][model];
+                dataPoints.push({ x: company, y: fuelConsumption, model: model });
+            }
+        }
+    
+        const ctx = document.getElementById('fuelConsumptionScatterPlot').getContext('2d');
+        const scatterPlot = new Chart(ctx, {
+            type: 'scatter',  // Set the chart type to scatter plot
+            data: {
+                datasets: [{
+                    label: 'Fuel Consumption (L/100 km)',
+                    data: dataPoints,  // Use the dataPoints array
+                    backgroundColor: 'red',  // Set dot color
+                    borderColor: 'rgba(0, 123, 255, 1)',  // Set dot border color
+                    pointRadius: 4,  // Set dot radius
+                }]
+            },
+            options: {
+                responsive: true, 
+                scales: {
+                    x: {
+                        type: 'category',  // Set x-axis as category axis for company names
+                        title: {
+                            display: true,
+                            text: 'Models',  // X-axis label
+                            color: 'black',
+                            font: {
+                                size: 20,
+                                weight: 600
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Fuel Consumption (L/100 km)',  // Y-axis label
+                            color: 'black',
+                            font: {
+                                size: 20,
+                                weight: 600
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: `Fuel Consumption Scatter Plot for ${selectedMake}`,
+                        color: 'black',
+                        font: {
+                            size: 20
+                        }
+                    },
+                }
+            }
+        });
+    </script>
+    
+</body>
+</html>

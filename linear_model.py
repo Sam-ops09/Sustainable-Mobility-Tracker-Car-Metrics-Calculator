@@ -1,4 +1,3 @@
-
 '''
 This is a simple linear regression model to predit the CO2 emmission from cars
 Dataset:
