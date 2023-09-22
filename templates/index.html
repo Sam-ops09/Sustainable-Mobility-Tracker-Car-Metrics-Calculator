@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <title>CO2 Emission Predictor</title>
@@ -25,16 +24,28 @@
             <input type="text" name="feature2" placeholder="Cylinders" required="required" />
             <input type="text" name="feature3" placeholder="Fuel Consumption" required="required" />
 
-            <button type="submit" class="btn">Predict</button>
+            <button type="submit" class="btn">
+                <span>
+                    Predict
+                </span>
+            </button>
+
         </form>
         <h3>{{ best_model }}</h3>
         <h3>{{ best_prediction }}</h3>
     </div>
 
     <div class="buttons">
-        <!-- Two buttons on the right -->
-        <button class="btn-left">Compare</button>
-        <a href="{{ url_for('graph_representation') }}" class="btn-right">Efficiency</a>
+        <!-- Two buttons on the left and right -->
+        <button class="btn-left">
+            <a href="{{ url_for('compare') }}" class="btn-left">
+                Compare
+            </a>
+        </button>
+
+        <a href="{{ url_for('graph_representation') }}" class="btn-right">
+            Efficiency
+        </a>
     </div>
 
 </body>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Comparison Page</title>
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/compare.css') }}">
+
+    <script>
+        // JavaScript function to populate model dropdown based on the selected make
+        function populateModels(makeSelect, modelSelect) {
+            var selectedMake = makeSelect.value;
+            var models = {{ makes_and_models|tojson|safe }};
+            var modelOptions = models[selectedMake] || [];
+            
+            // Clear existing options
+            while (modelSelect.options.length > 0) {
+                modelSelect.remove(0);
+            }
+
+            // Add new options
+            for (var i = 0; i < modelOptions.length; i++) {
+                var option = document.createElement("option");
+                option.text = modelOptions[i];
+                option.value = modelOptions[i];
+                modelSelect.add(option);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Compare Vehicle Models</h1>
+    <form method="POST" action="/compare">
+        <label for="make1">Select Make 1:</label>
+        <select id="make1" name="make1" onchange="populateModels(this, document.getElementById('model1'));">
+            <option value="" disabled selected>Select Make</option>
+            {% for make in makes_and_models %}
+                <option value="{{ make }}">{{ make }}</option>
+            {% endfor %}
+        </select>
+        <label for="model1">Select Model 1:</label>
+        <select id="model1" name="model1" >
+            <option value="" disabled selected>Select Make First</option>
+        </select>
+
+        <br><br>
+
+        <label for="make2">Select Make 2:</label>
+        <select id="make2" name="make2" onchange="populateModels(this, document.getElementById('model2'));">
+            <option value="" disabled selected>Select Make</option>
+            {% for make in makes_and_models %}
+                <option value="{{ make }}">{{ make }}</option>
+            {% endfor %}
+        </select>
+        <label for="model2">Select Model 2:</label>
+        <select id="model2" name="model2" >
+            <option value="" disabled selected>Select Make First</option>
+        </select>
+
+        <br><br>
+        <input type="submit" value="Compare" class="compare-button">
+    </form>
+
+    <br><br>
+
+    <!-- Display the specs for selected models -->
+    {% if specs1 %}
+    <h2>Model 1 Specs:</h2>
+    <ul>
+        <li>Make: {{ specs1['Make'] }}</li>
+        <li>Model: {{ specs1['Model'] }}</li>
+        <li>Fuel Consumption Comb (L/100 km): {{ specs1['Fuel Consumption Comb (L/100 km)'] }}</li>
+        <li>CO2 Emissions (g/km): {{ specs1['CO2 Emissions (g/km)'] }}</li>
+        <li>Engine Size (L): {{ specs1['Engine Size (L)'] }}</li>
+        <li>Cylinders: {{ specs1['Cylinders'] }}</li>
+        <li>Vehicle Class: {{ specs1['Vehicle Class'] }}</li>
+        <li>Transmission: {{ specs1['Transmission'] }}</li>
+    </ul>
+    {% endif %}
+
+    {% if specs2 %}
+    <h2>Model 2 Specs:</h2>
+    <ul>
+        <li>Make: {{ specs2['Make'] }}</li>
+        <li>Model: {{ specs2['Model'] }}</li>
+        <li>Fuel Consumption Comb (L/100 km): {{ specs2['Fuel Consumption Comb (L/100 km)'] }}</li>
+        <li>CO2 Emissions (g/km): {{ specs2['CO2 Emissions (g/km)'] }}</li>
+        <li>Engine Size (L): {{ specs2['Engine Size (L)'] }}</li>
+        <li>Cylinders: {{ specs2['Cylinders'] }}</li>
+        <li>Vehicle Class: {{ specs2['Vehicle Class'] }}</li>
+        <li>Transmission: {{ specs2['Transmission'] }}</li>
+    </ul>
+    {% endif %}
+</body>
+
+</html>
