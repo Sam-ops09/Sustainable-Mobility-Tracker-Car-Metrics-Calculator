@@ -60,7 +60,7 @@
                 dataPoints.push({ x: company, y: fuelConsumption, model: model });
             }
         }
-    
+        
         const ctx = document.getElementById('fuelConsumptionScatterPlot').getContext('2d');
         const scatterPlot = new Chart(ctx, {
             type: 'scatter',  // Set the chart type to scatter plot
@@ -74,7 +74,7 @@
                 }]
             },
             options: {
-                responsive: true,
+                responsive: true, // Make the chart responsive
                 maintainAspectRatio: false, // Disable aspect ratio
                 scales: {
                     x: {

@@ -6,113 +6,87 @@ import pickle
 app = Flask(__name__)
 
 # Load the trained models
-linear_model = pickle.load(open('linear_model.pkl', 'rb'))
-ridge_model = pickle.load(open('ridge_model.pkl', 'rb'))
-lasso_model = pickle.load(open('lasso_model.pkl', 'rb'))
-elastic_net_model = pickle.load(open('elastic_net_model.pkl', 'rb'))
+models = {}
+model_names = ['linear_model', 'ridge_model', 'lasso_model', 'elastic_net_model']
 
-def get_unique_companies():
-    unique_companies = set()
-    with open('FuelConsumption.csv', 'r') as csv_file:
-        reader = csv.DictReader(csv_file)
-        for row in reader:
-            unique_companies.add(row['MAKE'])
-    return sorted(list(unique_companies))  # Sort the companies alphabetically
+# Load each model and store it in the 'models' dictionary
+for model_name in model_names:
+    with open(f'{model_name}.pkl', 'rb') as model_file:
+        models[model_name] = pickle.load(model_file)
 
-@app.route('/')
-def home():
-    companies = get_unique_companies()
-    selected_company = request.args.get('selected_company', companies[0])
-    # Your code for fetching and processing data based on the selected company goes here
-    return render_template('index.html', companies=companies, selected_company=selected_company)
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    int_features = [float(x) for x in request.form.values()]
-    final_features = [np.array(int_features)]
-
-    linear_prediction = linear_model.predict(final_features)
-    ridge_prediction = ridge_model.predict(final_features)
-    lasso_prediction = lasso_model.predict(final_features)
-    elastic_net_prediction = elastic_net_model.predict(final_features)
-
-    best_model = 'Linear Regression'
-    best_prediction = linear_prediction[0]
-    
-    # if linear_prediction[0] > best_prediction:
-    #     best_model = 'Linear Regression'
-    #     best_prediction = linear_prediction[0]
-
-    if ridge_prediction[0] > best_prediction:
-        best_model = 'Ridge Regression'
-        best_prediction = ridge_prediction[0]
-
-    if lasso_prediction[0] > best_prediction:
-        best_model = 'Lasso Regression'
-        best_prediction = lasso_prediction[0]
-
-    if elastic_net_prediction[0] > best_prediction:
-        best_model = 'Elastic Net Regression'
-        best_prediction = elastic_net_prediction[0]
-
-    return render_template('index.html',
-        best_model=f'Selected Model: {best_model}',
-        best_prediction=f'Prediction: {round(best_prediction, 2)}')
-
-@app.route('/index')
-def index():
-    selected_company = request.args.get('selected_company', 'default_company')
-    # Your code for fetching and processing data based on the selected company goes here
-    return render_template('index.html', selected_company=selected_company)
-
-@app.route('/graph_representation')
-def graph_representation():
-    # Add code here to read data from the CSV file
-    fuel_consumption_data = {}
-    makes = set()  # Create a set to store unique "MAKE" values
+# Function to load fuel consumption data from the CSV file
+def load_fuel_consumption_data():
+    fuel_consumption_data = {}  # Dictionary to store fuel consumption data
+    makes = set()  # Set to store unique make values
 
     with open('FuelConsumption.csv', 'r') as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
-            # Assuming you have 'MAKE' column in your CSV
             company = row['MAKE']
             model = row['MODEL']
             fuel_consumption = float(row['FUELCONSUMPTION_COMB_MPG'])
             
+            # Check if the company (make) is in the dictionary
             if company not in fuel_consumption_data:
-                fuel_consumption_data[company] = {}  # Change to a dictionary for models
+                fuel_consumption_data[company] = {}
             
+            # Check if the model is in the dictionary for this company
             if model not in fuel_consumption_data[company]:
-                fuel_consumption_data[company][model] = []  # Initialize an empty list for each model
+                fuel_consumption_data[company][model] = []
             
-            fuel_consumption_data[company][model].append(fuel_consumption)  # Append to the correct model list
-
-            # Add the "MAKE" value to the set
+            # Append the fuel consumption value to the correct model list
+            fuel_consumption_data[company][model].append(fuel_consumption)
+            
+            # Add the make to the set of makes
             makes.add(company)
 
-    # Print some data to check if it's loaded correctly
+    return fuel_consumption_data, sorted(list(makes))
+
+# Load fuel consumption data and get a list of unique companies (makes)
+fuel_consumption_data, companies = load_fuel_consumption_data()
+
+# Define the home route
+@app.route('/')
+def home():
+    selected_company = request.args.get('selected_company', companies[0])
+    return render_template('index.html', companies=companies, selected_company=selected_company)
+
+# Define the prediction route
+@app.route('/predict', methods=['POST'])
+def predict():
+    # Extract input features from the form
+    int_features = [float(x) for x in request.form.values()]
+    final_features = [np.array(int_features)]
+
+    best_model_name = None
+    best_prediction = None
+
+    # Iterate through the models and make predictions
+    for model_name, model in models.items():
+        prediction = model.predict(final_features)[0]
+        if best_model_name is None or prediction > best_prediction:
+            best_model_name = model_name
+            best_prediction = prediction
+
+    # Render the prediction results
+    return render_template('index.html', best_model=f'Selected Model: {best_model_name}', best_prediction=f'Prediction: {round(best_prediction, 2)}')
+
+# Define the index route
+@app.route('/index')
+def index():
+    selected_company = request.args.get('selected_company', 'default_company')
+    return render_template('index.html', selected_company=selected_company)
+
+# Define the route for displaying scatter plots
+@app.route('/graph_representation')
+def graph_representation():
     selected_make = request.args.get('selected_make')
+    return render_template('graph.html', fuel_consumption_data=fuel_consumption_data, makes=companies, selected_make=selected_make)
 
-    # Convert the set of "MAKE" values to a list for dropdown options
-    makes_list = list(makes)
-
-    # You can now pass fuel_consumption_data and makes_list to the template
-    return render_template('graph.html', fuel_consumption_data=fuel_consumption_data, makes=makes_list, selected_make=selected_make)
-
-# Define a function to read the available models from the CSV file
-def get_available_models():
-    available_models = set()  # Use a set to ensure unique model names
-
-    with open('FuelConsumption.csv', 'r') as csv_file:
-        reader = csv.DictReader(csv_file)
-        for row in reader:
-            available_models.add(row['MODEL'])
-
-    return sorted(list(available_models))  # Sort the models alphabetically
-
-# Modify the get_unique_makes function to also get models
-def get_unique_makes():
+# Function to get unique makes and their associated models
+def get_unique_models():
     makes_and_models = {}
+    
     with open('FuelConsumption.csv', 'r') as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
@@ -126,29 +100,32 @@ def get_unique_makes():
 
 # Function to get model specifications based on make and model
 def get_model_specs(make, model):
-    specs = {}  # Initialize an empty dictionary to store model specifications
-
-    # Open and read the CSV file
+    specs = {}
+    
     with open('FuelConsumption.csv', 'r') as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
             if row['MAKE'] == make and row['MODEL'] == model:
                 # Assign the specifications to the dictionary
-                specs['Make'] = row['MAKE']
-                specs['Model'] = row['MODEL']
-                specs['Fuel Consumption Comb (L/100 km)'] = row['FUELCONSUMPTION_COMB']
-                specs['CO2 Emissions (g/km)'] = row['CO2EMISSIONS']
-                specs['Engine Size (L)'] = row['ENGINESIZE']
-                specs['Cylinders'] = row['CYLINDERS']
-                specs['Vehicle Class'] = row['VEHICLECLASS']
-                specs['Transmission'] = row['TRANSMISSION']
+                specs = {
+                    'Make': row['MAKE'],
+                    'Model': row['MODEL'],
+                    'Fuel Consumption Comb (L/100 km)': row['FUELCONSUMPTION_COMB'],
+                    'CO2 Emissions (g/km)': row['CO2EMISSIONS'],
+                    'Engine Size (L)': row['ENGINESIZE'],
+                    'Cylinders': row['CYLINDERS'],
+                    'Vehicle Class': row['VEHICLECLASS'],
+                    'Transmission': row['TRANSMISSION']
+                }
+                break  # No need to continue once specs are found
 
     return specs
 
-# Modify the /compare route
+# Define the route for comparing two vehicle models
 @app.route('/compare', methods=['GET', 'POST'])
 def compare():
-    makes_and_models = get_unique_makes()
+    # Get the unique makes and their associated models
+    makes_and_models = get_unique_models()
 
     if request.method == 'POST':
         make1 = request.form.get('make1')
@@ -156,13 +133,14 @@ def compare():
         make2 = request.form.get('make2')
         model2 = request.form.get('model2')
 
+        # Get specifications for the selected models
         specs1 = get_model_specs(make1, model1)
         specs2 = get_model_specs(make2, model2)
 
+        # Render the comparison results
         return render_template('compare.html', makes_and_models=makes_and_models, specs1=specs1, specs2=specs2)
 
     return render_template('compare.html', makes_and_models=makes_and_models)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
