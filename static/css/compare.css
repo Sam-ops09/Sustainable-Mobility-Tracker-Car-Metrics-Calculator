@@ -4,25 +4,27 @@ html {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
 }
 
 body {
     font-family: 'Nathanos', sans-serif;
     max-width: 1000px;
     font-size: 18px;
-    margin: 0 auto;
+    margin: 50px auto;
     padding: 30px;
     background-color: #331952;
     color: #ccc;
-    background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top,  rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg,  #670d10 0%, #092756 100%);
+    background-image: linear-gradient( 111.4deg,  rgba(7,7,9,1) 6.5%, rgba(27,24,113,1) 93.2% );
+    /* background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top,  rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg,  #670d10 0%, #092756 100%);
     background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
     background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
     background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
     background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg,  #670d10 0%,#092756 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 ); */
+
 }
 
 h1 {
@@ -34,20 +36,23 @@ h1 {
 h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: rgb(192, 132, 252);
+    /* color: rgb(192, 132, 252); */
+    color: black;
 }
 
 li {
     /* list-style-type: none; */
     margin-bottom: 5px;
     /* text-align: center; */
-    color: rgb(192, 132, 252);
+    /* color: rgb(192, 132, 252); */
+    color: black;
 }
 
 label {
     color: rgb(234, 179, 8);
     font-weight: 700;
     font-size: 20px;
+    text-align: center;
 }
 
 .compare-button {
@@ -78,6 +83,10 @@ input:active {
     transform: translate(3px, 3px);
 }
 
+form {
+    text-align: center;
+}
+
 form select {
     background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
     color: #111;
@@ -90,7 +99,7 @@ form select {
     transition: background-color 0.3s ease;
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
     text-decoration: none;
-    margin: 10px;
+    margin: 10px auto;
     width: 200px;
 }
 
@@ -105,3 +114,127 @@ option {
     background-color: #4169E1;
 }
 
+.results-container {
+    /* justify-content: space-between; */
+    margin-top: 20px; /* Add margin for spacing */
+    width: 100%; /* Ensure the container takes full width of the parent */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.result {
+    flex: 1; /* Each result takes equal width */
+    padding: 20px; /* Add padding for spacing */
+    border: 1px solid #333; /* Add borders for separation */
+    background-color: #638DE5; /* Background color for each result */
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.85); /* Add shadow for depth */
+    margin-right: 10px; /* Add margin between results */
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+
+.btn {
+    position: relative;
+    text-decoration: none;
+    font-size: 18px;
+    font-family: monospace;
+
+    width: 105px;
+    height: 30px;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    color: white;
+    flex-direction: column;
+    justify-content: center;
+    border: none;
+    padding: 12px;
+    gap: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+
+    margin: 30px;
+
+    position: absolute;
+    top: 10px; /* Adjust the top distance as needed */
+    right: 10px; /* Adjust the right distance as needed */  
+}
+
+
+.btn::before {
+    content: '';
+    position: absolute;
+    text-decoration: none;
+    inset: 0;
+    left: -4px;
+    top: -1px;
+    margin: auto;
+    width: 138px;
+    height: 58px;
+    border-radius: 10px;
+    background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100% );
+    z-index: -10;
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100% );
+    transform: translate3d(0, 0, 0) scale(0.95);
+    filter: blur(20px);
+}
+
+.btn:hover::after {
+    filter: blur(30px);
+}
+
+.btn:hover::before {
+    transform: rotate(-180deg);
+}
+
+.btn:active::before {
+    scale: 0.7;
+}
+
+/* Responsive styles for smaller screens (e.g., mobile devices) */
+@media screen and (max-width: 768px) {
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 4px 0;
+    }
+}
+/* {% if specs1 %}
+<h2>Model 1 Specs:</h2>
+<ul>
+    <li>Make: {{ specs1['Make'] }}</li>
+    <li>Model: {{ specs1['Model'] }}</li>
+    <li>Fuel Consumption Comb (L/100 km): {{ specs1['Fuel Consumption Comb (L/100 km)'] }}</li>
+    <li>CO2 Emissions (g/km): {{ specs1['CO2 Emissions (g/km)'] }}</li>
+    <li>Engine Size (L): {{ specs1['Engine Size (L)'] }}</li>
+    <li>Cylinders: {{ specs1['Cylinders'] }}</li>
+    <li>Vehicle Class: {{ specs1['Vehicle Class'] }}</li>
+    <li>Transmission: {{ specs1['Transmission'] }}</li>
+</ul>
+{% endif %}
+
+{% if specs2 %}
+<h2>Model 2 Specs:</h2>
+<ul>
+    <li>Make: {{ specs2['Make'] }}</li>
+    <li>Model: {{ specs2['Model'] }}</li>
+    <li>Fuel Consumption Comb (L/100 km): {{ specs2['Fuel Consumption Comb (L/100 km)'] }}</li>
+    <li>CO2 Emissions (g/km): {{ specs2['CO2 Emissions (g/km)'] }}</li>
+    <li>Engine Size (L): {{ specs2['Engine Size (L)'] }}</li>
+    <li>Cylinders: {{ specs2['Cylinders'] }}</li>
+    <li>Vehicle Class: {{ specs2['Vehicle Class'] }}</li>
+    <li>Transmission: {{ specs2['Transmission'] }}</li>
+</ul>
+{% endif %} */
