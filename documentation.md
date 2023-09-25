@@ -1,85 +1,138 @@
-# Flask Application Documentation
+# Fuel Consumption Prediction Web App
 
-## Introduction
-
-This documentation provides an overview of the features, endpoints, and usage of the Flask application designed to compare vehicle models based on their specifications and predict fuel efficiency.
+This Flask web application is designed to predict fuel consumption for vehicles using machine learning models. It allows users to input certain features of a vehicle and receive a prediction from a selection of trained models.
 
 ## Table of Contents
 
-1. [Overview](#introduction)
-2. [Getting Started](#getting-started)
-3. [Endpoints](#endpoints)
-   - [Home](#home)
-   - [Prediction](#prediction)
-   - [Graph Representation](#graph-representation)
-   - [Comparison](#comparison)
-4. [Data Sources](#data-sources)
-5. [Models](#models)
-6. [Running the Application](#running-the-application)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Getting Started
+## Prerequisites
 
-To use this Flask application, ensure you have the following prerequisites:
+Before running the application, make sure you have the following prerequisites installed:
 
-- Python installed on your system.
-- Required libraries and dependencies (Flask, NumPy, Chart.js, etc.) installed.
-- Trained machine learning models (Linear, Ridge, Lasso, Elastic Net) available as pickle files.
+- Python 3.x
+- Flask
+- NumPy
+- scikit-learn
+- pickle
 
-Clone the project repository and place the trained model pickle files in the project directory.
+You can install these dependencies using `pip`:
 
-## Endpoints
+```bash
+pip install flask numpy scikit-learn
+```
 
-### Home
+## Installation
 
-- **URL**: `/`
-- **Description**: The home page where you can select a company and input features for fuel efficiency prediction.
+1. Clone this repository to your local machine:
 
-### Prediction
+```bash
+git clone https://github.com/yourusername/fuel-consumption-prediction.git
+```
 
-- **URL**: `/predict`
-- **Description**: Endpoint for making fuel efficiency predictions based on input features.
+2. Change your working directory to the project folder:
 
-### Graph Representation
+```bash
+cd fuel-consumption-prediction
+```
 
-- **URL**: `/graph_representation`
-- **Description**: Displays a scatter plot of company-wise fuel efficiency for a selected make.
+3. Run the Flask application:
 
-### Comparison
+```bash
+python app.py
+```
 
-- **URL**: `/compare`
-- **Description**: Allows users to compare specifications of two vehicle models.
+The application should now be running locally at `http://127.0.0.1:5000/`.
 
-## Data Sources
+## Working Explanation
 
-- Data for fuel consumption and vehicle specifications is sourced from a CSV file named `FuelConsumption.csv`.
+1. **Importing Dependencies**:
+   - You start by importing necessary libraries such as `csv`, `numpy` (as `np`), `Flask`, `request`, `render_template`, and `pickle`.
 
-## Models
+2. **Loading Trained Models**:
+   - You load pre-trained machine learning models (linear regression, ridge regression, lasso regression, and elastic net regression) using `pickle`. These models are stored in a dictionary called `models`.
 
-- Trained machine learning models are used for fuel efficiency prediction:
-  - Linear Regression
-  - Ridge Regression
-  - Lasso Regression
-  - Elastic Net Regression
+3. **Loading Fuel Consumption Data**:
+   - You define a function `load_fuel_consumption_data()` to read fuel consumption data from a CSV file named 'FuelConsumption.csv'. The data is stored in a dictionary `fuel_consumption_data`, which organizes the data by car make and model. You also create a set `makes` to store unique car makes.
 
-## Running the Application
+4. **Flask App Initialization**:
+   - You initialize a Flask app with `app = Flask(__name__)`.
 
-1. Install the required dependencies by running: `pip install -r requirements.txt`.
+5. **Home Route** (`/`):
+   - The home route is defined with the `home()` function. It allows users to select a car make from a dropdown menu. The selected make is passed as a parameter (`selected_company`) to the 'index.html' template.
 
-2. Place the trained model pickle files (`linear_model.pkl`, `ridge_model.pkl`, `lasso_model.pkl`, `elastic_net_model.pkl`) in the project directory.
+6. **Prediction Route** (`/predict`):
+   - The prediction route is defined with the `predict()` function. It processes a POST request, extracts input features from a form, and makes predictions using the loaded machine learning models. It selects the best model based on the highest prediction and renders the result on the 'index.html' template.
 
-3. Run the Flask application by executing: `python app.py`.
+7. **Index Route** (`/index`):
+   - This route is similar to the home route but is accessed separately. It also allows users to select a car make from a dropdown menu, and the selected make is passed as `selected_company` to the 'index.html' template.
 
-4. Access the application via a web browser using the provided URL.
+8. **Graph Representation Route** (`/graph_representation`):
+   - This route is used to display scatter plots based on the selected car make. It takes `selected_make` as a parameter and renders the 'graph.html' template, passing the fuel consumption data and makes for plotting.
+
+9. **Function to Get Unique Makes and Models**:
+   - `get_unique_models()` extracts unique car makes and their associated models from the data.
+
+10. **Function to Get Model Specifications**:
+    - `get_model_specs()` retrieves specifications (e.g., fuel consumption, CO2 emissions) based on the selected car make and model.
+
+11. **Compare Route** (`/compare`):
+    - This route allows users to compare specifications of two different vehicle models. Users can select two makes and models from dropdown menus, and the selected specifications are displayed on the 'compare.html' template.
+
+12. **Running the App**:
+    - The app runs with `if __name__ == "__main__": app.run(debug=True)`.
+
+Overall, the Flask application loads pre-trained machine learning models, handles user input and predictions, displays data visualizations, and allows users to compare vehicle specifications. It combines machine learning with web functionality to provide an interactive experience for users interested in exploring and comparing vehicle data.
 
 ## Usage
 
-1. Visit the home page to select a company and input features for fuel efficiency prediction.
+### Home Page
 
-2. Navigate to the "Graph Representation" page to view a scatter plot of fuel efficiency for a selected make.
+- Access the home page by opening a web browser and navigating to `http://127.0.0.1:5000/`.
+- Select a vehicle make (company) from the dropdown menu.
+- Click the "Predict" button to see the fuel consumption prediction using the best model.
 
-3. Use the "Comparison" page to compare specifications of two vehicle models.
+### Comparing Vehicle Models
 
-## Conclusion
+- Access the comparison page by clicking on the "Compare Vehicle Models" link in the navigation bar.
+- Select two different vehicle makes and models to compare their specifications.
 
-This documentation provides an overview of the Flask application's functionality, endpoints, data sources, models, and usage instructions. It serves as a guide for using and understanding the application.
+### Viewing Scatter Plots
 
+- Access the scatter plot page by clicking on the "View Scatter Plots" link in the navigation bar.
+- Select a vehicle make to view scatter plots of fuel consumption data for different models of that make.
+
+## Project Structure
+
+The project has the following structure:
+
+```
+fuel-consumption-prediction/
+    ├── app.py                  # Flask application code
+    ├── linear_model.pkl        # Trained linear regression model
+    ├── ridge_model.pkl         # Trained ridge regression model
+    ├── lasso_model.pkl         # Trained lasso regression model
+    ├── elastic_net_model.pkl   # Trained elastic net model
+    ├── FuelConsumption.csv     # Fuel consumption dataset
+    ├── templates/              # HTML templates
+    │   ├── index.html         # Home page template
+    │   ├── compare.html       # Model comparison template
+    │   ├── graph.html         # Scatter plot template
+    ├── static/                 # Static files (CSS, JavaScript)
+    │   ├── style.css          # CSS styles
+    │   ├── script.js          # JavaScript for interactive features
+    ├── README.md               # Project documentation
+```
+
+## Contributing
+
+If you'd like to contribute to this project, please open an issue or submit a pull request. Contributions are welcome!
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
