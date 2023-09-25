@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Company-wise Fuel Consumption Scatter Plot</title>
+    <title>Company-wise Fuel Consumption Line Chart</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/graph.css') }}">
 </head>
 
@@ -19,21 +19,21 @@
                         <option value="{{ make }}" {% if selected_make == make %}selected{% endif %}>{{ make }}</option>
                     {% endfor %}
                 </select>
-                <button type="submit" class="calculate-again-button">Show Scatter Plot</button>
+                <button type="submit" class="calculate-again-button">Show Line Chart</button>
             </form>
         </div>
     </div>
 
-    <!-- Container for displaying the scatter plot -->
+    <!-- Container for displaying the line chart -->
     <div class="chart-container">
-        <canvas id="fuelConsumptionScatterPlot" width="1000" height="800"></canvas>
+        <canvas id="fuelConsumptionLineChart" width="1000" height="800"></canvas>
 
         {% if not selected_make %}
-            <p class="no-make-selected">Please select a make to display the scatter plot.</p>
+            <p class="no-make-selected">Please select a make to display the line chart.</p>
         {% endif %}
     </div>
 
-    <!-- Container for the "Calculate Again"again button -->
+    <!-- Container for the "Calculate Again" button -->
     <div class="calculate-again-container">
         <!-- Create a link with the selected company as a URL parameter to navigate back to the index page -->
         <a class="calculate-again-button" href="{{ url_for('index', selected_company=selected_company) }}">Calculate Again</a>
@@ -49,39 +49,44 @@
         const companyData = fuelConsumptionData[selectedMake];
         const companyNames = Object.keys(companyData);
     
-        // Create an array to store data points
-        const dataPoints = [];
+        // Create an array to store data points for the line chart
+        const dataPoints = {
+            labels: [], // X-axis labels (company names)
+            datasets: [{
+                label: 'Fuel Consumption (L/100 km)',
+                data: [], // Y-axis data (fuel consumption values)
+                borderColor: 'blue', // Line color
+                fill: false // Don't fill the area under the line
+            }]
+        };
     
-        // Iterate through companies and models to create data points
-        for (const company of companyNames) {
+        // Populate dataPoints with company names and fuel consumption values
+        companyNames.forEach(company => {
+            dataPoints.labels.push(company);
             const models = Object.keys(companyData[company]);
-            for (const model of models) {
+            let totalFuelConsumption = 0;
+            let count = 0;
+            models.forEach(model => {
                 const fuelConsumption = companyData[company][model];
-                dataPoints.push({ x: company, y: fuelConsumption, model: model });
-            }
-        }
-        
-        const ctx = document.getElementById('fuelConsumptionScatterPlot').getContext('2d');
-        const scatterPlot = new Chart(ctx, {
-            type: 'scatter',  // Set the chart type to scatter plot
-            data: {
-                datasets: [{
-                    label: 'Fuel Consumption (L/100 km)',
-                    data: dataPoints,  // Use the dataPoints array
-                    backgroundColor: 'red',  // Set dot color
-                    borderColor: 'rgba(0, 123, 255, 1)',  // Set dot border color
-                    pointRadius: 4,  // Set dot radius to 0 (no dots)
-                }]
-            },
+                totalFuelConsumption += fuelConsumption;
+                count++;
+            });
+            const averageFuelConsumption = count > 0 ? totalFuelConsumption / count : 0;
+            dataPoints.datasets[0].data.push(averageFuelConsumption);
+        });
+    
+        const ctx = document.getElementById('fuelConsumptionLineChart').getContext('2d');
+        const lineChart = new Chart(ctx, {
+            type: 'line', // Set the chart type to line chart
+            data: dataPoints, // Use the dataPoints object
             options: {
                 responsive: true, // Make the chart responsive
                 maintainAspectRatio: false, // Disable aspect ratio
                 scales: {
                     x: {
-                        type: 'category',  // Set x-axis as category axis for company names
                         title: {
                             display: true,
-                            text: 'Models',  // X-axis label
+                            text: 'Company', // X-axis label
                             color: 'black',
                             font: {
                                 size: 20,
@@ -93,7 +98,7 @@
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Fuel Consumption (L/100 km)',  // Y-axis label
+                            text: 'Average Fuel Consumption (L/100 km)', // Y-axis label
                             color: 'black',
                             font: {
                                 size: 20,
@@ -105,18 +110,18 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: `Fuel Consumption Scatter Plot for ${selectedMake}`,
+                        text: `Average Fuel Consumption Line Chart for ${selectedMake}`,
                         color: 'black',
                         font: {
                             size: 25,
                             weight: 600
                         }
-                    },
+                    }
                 }
             }
         });
 
-        scatterPlot.resize();
+        lineChart.resize();
     </script>
     
 </body>

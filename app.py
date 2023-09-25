@@ -25,18 +25,18 @@ def load_fuel_consumption_data():
             company = row['MAKE']
             model = row['MODEL']
             fuel_consumption = float(row['FUELCONSUMPTION_COMB_MPG'])
-            
+
             # Check if the company (make) is in the dictionary
             if company not in fuel_consumption_data:
                 fuel_consumption_data[company] = {}
-            
+
             # Check if the model is in the dictionary for this company
             if model not in fuel_consumption_data[company]:
                 fuel_consumption_data[company][model] = []
-            
+
             # Append the fuel consumption value to the correct model list
             fuel_consumption_data[company][model].append(fuel_consumption)
-            
+
             # Add the make to the set of makes
             makes.add(company)
 
@@ -86,7 +86,7 @@ def graph_representation():
 # Function to get unique makes and their associated models
 def get_unique_models():
     makes_and_models = {}
-    
+
     with open('FuelConsumption.csv', 'r') as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
@@ -101,7 +101,7 @@ def get_unique_models():
 # Function to get model specifications based on make and model
 def get_model_specs(make, model):
     specs = {}
-    
+
     with open('FuelConsumption.csv', 'r') as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
