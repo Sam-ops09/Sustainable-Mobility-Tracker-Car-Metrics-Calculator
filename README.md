@@ -1,54 +1,71 @@
-# Sustainable-Mobility-Tracker-Car-Metrics-Calculator
+# Fuel Consumption Prediction App
 
-This repository contains the code for a car metrics calculator that can be used to track the sustainability of a vehicle. The calculator takes into account a variety of factors, including the vehicle's fuel efficiency, emissions, and weight.
+## Overview
 
-## How to use the calculator
+This is a Flask web application that predicts fuel consumption and compares vehicle models based on CO2 emissions. It uses machine learning models to make predictions.
 
-To use the calculator, simply enter the following information:
+## Features
 
-* The vehicle's make and model
-* The vehicle's fuel type
-* The vehicle's fuel efficiency (in miles per gallon)
-* The vehicle's emissions (in grams of CO2 per mile)
-* The vehicle's weight (in pounds)
+- Predicts fuel consumption using machine learning models.
+- Compares vehicle models based on CO2 emissions.
+- Visualizes data with line plots.
 
-The calculator will then use this information to calculate the vehicle's sustainability score. The score is a number between 0 and 100, with 100 being the most sustainable.
+## Prerequisites
 
-## Code snippets
+Before running this application, you need to have the following installed:
 
-The following code snippets show how to use the calculator:
+- Python (version 3.x)
+- Flask
+- NumPy
+- scikit-learn
+- pickle
 
-```python
-# Import the necessary libraries
-import requests
-import json
+You can install the required packages using pip:
 
-# Get the vehicle's make and model
-make = input("Enter the vehicle's make: ")
-model = input("Enter the vehicle's model: ")
-
-# Get the vehicle's fuel type
-fuel_type = input("Enter the vehicle's fuel type: ")
-
-# Get the vehicle's fuel efficiency
-fuel_efficiency = input("Enter the vehicle's fuel efficiency (in miles per gallon): ")
-
-# Get the vehicle's emissions
-emissions = input("Enter the vehicle's emissions (in grams of CO2 per mile): ")
-
-# Get the vehicle's weight
-weight = input("Enter the vehicle's weight (in pounds): ")
-
-# Calculate the vehicle's sustainability score
-sustainability_score = calculate_sustainability_score(make, model, fuel_type, fuel_efficiency, emissions, weight)
-
-# Print the vehicle's sustainability score
-print("The vehicle's sustainability score is:", sustainability_score)
+```bash
+pip install Flask numpy scikit-learn
 ```
 
-## Step-by-step explanation of the code
+## Getting Started
 
-The following is a step-by-step explanation of the code:
+1. Clone the repository to your local machine:
 
-1. The first step is to import the necessary libraries. In this case, we are importing the `requests` and `json` libraries.
-2. The next step is to get the vehicle's make and model. This is done by calling the `input()` function and prompting the user to enter the vehicle's make and model.
+```bash
+git clone https://github.com/your-username/fuel-consumption-prediction.git
+cd fuel-consumption-prediction
+```
+
+2. Run the Flask application:
+
+```bash
+python app.py
+```
+
+3. Open your web browser and navigate to http://localhost:5000 to access the application.
+
+## Usage
+
+- Home Page: Select a car make and model to predict fuel consumption and see the closest prediction along with the error percentage.
+- Compare Page: Compare two vehicle models based on specifications.
+- Graph Page: Visualize fuel consumption data with line plots.
+
+## Data Source
+
+The fuel consumption data is sourced from a CSV file named `FuelConsumption.csv`.
+
+## Machine Learning Models
+
+The application uses the following machine learning models for prediction:
+
+- Linear Regression
+- Ridge Regression
+- Lasso Regression
+- Elastic Net Regression
+
+## Acknowledgments
+
+- This project is for educational purposes.
+
+## License
+
+This project is licensed under the [License Name] License - see the [LICENSE](LICENSE) file for details.
