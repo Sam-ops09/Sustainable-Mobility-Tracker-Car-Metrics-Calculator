@@ -23,7 +23,7 @@
             <input type="text" name="feature1" placeholder="Engine Size" required="required" />
             <input type="text" name="feature2" placeholder="Cylinders" required="required" />
             <input type="text" name="feature3" placeholder="Fuel Consumption" required="required" />
-
+                
             <button type="submit" class="btn">
                 <span>
                     Predict
@@ -33,6 +33,7 @@
         </form>
         <h3>{{ best_model }}</h3>
         <h3>{{ best_prediction }}</h3>
+        <h3>{{ error_percentage }}</h3>
     </div>
 
     <div class="buttons">

@@ -7,7 +7,7 @@ import pickle
 df = pd.read_csv("FuelConsumption.csv")
 
 # Select the relevant features and the target variable
-features = ['ENGINESIZE', 'CYLINDERS', 'FUELCONSUMPTION_COMB']
+features = ['ENGINESIZE', 'CYLINDERS', 'FUELCONSUMPTION_CITY']
 target = 'CO2EMISSIONS'
 X = df[features]
 y = df[target]
@@ -31,3 +31,11 @@ print(f'R-squared: {r2}')
 # Save the trained Elastic Net Regression model to a pickle file
 with open('elastic_net_model.pkl', 'wb') as model_file:
     pickle.dump(elastic_net_model, model_file)
+    
+sample_input = [[1.5, 4, 6]]
+
+# Make a prediction
+predicted_co2_emission = elastic_net_model.predict(sample_input)
+
+# Print the prediction
+print(f"Predicted CO2 Emission: {predicted_co2_emission[0]}")

@@ -24,7 +24,7 @@ def load_fuel_consumption_data():
         for row in reader:
             company = row['MAKE']
             model = row['MODEL']
-            fuel_consumption = float(row['FUELCONSUMPTION_COMB_MPG'])
+            fuel_consumption = float(row['FUELCONSUMPTION_CITY'])
 
             # Check if the company (make) is in the dictionary
             if company not in fuel_consumption_data:
@@ -59,17 +59,36 @@ def predict():
     final_features = [np.array(int_features)]
 
     best_model_name = None
-    best_prediction = None
+    closest_prediction = None
+    closest_difference = None  # To keep track of the closest difference
+    error_percentage = None  # Initialize error_percentage to None
 
     # Iterate through the models and make predictions
     for model_name, model in models.items():
         prediction = model.predict(final_features)[0]
-        if best_model_name is None or prediction > best_prediction:
-            best_model_name = model_name
-            best_prediction = prediction
 
-    # Render the prediction results
-    return render_template('index.html', best_model=f'Selected Model: {best_model_name}', best_prediction=f'Prediction: {round(best_prediction, 2)}')
+        # Load the CO2 Emission value from FuelConsumption.csv for comparison
+        with open('FuelConsumption.csv', 'r') as csv_file:
+            reader = csv.DictReader(csv_file)
+            for row in reader:
+                co2_emission_csv = float(row['CO2EMISSIONS'])
+                # Calculate the absolute difference between the prediction and actual value
+                difference = abs(prediction - co2_emission_csv)
+
+                # Update if this prediction is closer
+                if closest_difference is None or difference < closest_difference:
+                    closest_difference = difference
+                    closest_prediction = prediction
+                    best_model_name = model_name  # Update the best model name
+
+                # Calculate the error percentage based on the closest difference and the actual CO2 value
+                if closest_prediction < co2_emission_csv:
+                    error_percentage = (closest_difference / co2_emission_csv) * 100
+                else:
+                    error_percentage = (closest_difference / closest_prediction) * 100
+
+    # Render the prediction results, including the closest prediction and error percentage
+    return render_template('index.html', best_model=f'Selected Model: {best_model_name}', best_prediction=f'Closest Prediction: {round(closest_prediction, 2)}', error_percentage=f'Error Percentage: {round(error_percentage, 2)}%')
 
 # Define the index route
 @app.route('/index')
@@ -110,7 +129,7 @@ def get_model_specs(make, model):
                 specs = {
                     'Make': row['MAKE'],
                     'Model': row['MODEL'],
-                    'Fuel Consumption Comb (L/100 km)': row['FUELCONSUMPTION_COMB'],
+                    'Fuel Consumption Comb (L/100 km)': row['FUELCONSUMPTION_CITY'],
                     'CO2 Emissions (g/km)': row['CO2EMISSIONS'],
                     'Engine Size (L)': row['ENGINESIZE'],
                     'Cylinders': row['CYLINDERS'],

@@ -1,39 +1,30 @@
-'''
-This is a simple linear regression model to predit the CO2 emmission from cars
-Dataset:
-FuelConsumption.csv, which contains model-specific fuel consumption ratings and estimated carbon dioxide emissions
-for new light-duty vehicles for retail sale in Canada
-'''
-
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 import pickle
 
+# Load the dataset
 df = pd.read_csv("FuelConsumption.csv")
 
-# take a look at the dataset
-#df.head()
+# Use the required features
+cdf = df[['ENGINESIZE', 'CYLINDERS', 'FUELCONSUMPTION_CITY', 'CO2EMISSIONS']]
 
-#use required features
-cdf = df[['ENGINESIZE','CYLINDERS','FUELCONSUMPTION_COMB','CO2EMISSIONS']]
+# Training Data and Predictor Variable
+x = cdf[['ENGINESIZE', 'CYLINDERS', 'FUELCONSUMPTION_CITY']]
+y = cdf['CO2EMISSIONS']
 
-#Training Data and Predictor Variable
-# Use all data for training (tarin-test-split not used)
-x = cdf.iloc[:, :3]
-y = cdf.iloc[:, -1]
+# Create and train the linear regression model
+linear_model = LinearRegression()
+linear_model.fit(x, y)
 
+# Save the trained model to a file
+with open('linear_model.pkl', 'wb') as model_file:
+    pickle.dump(linear_model, model_file)
 
-regressor = LinearRegression()
+# Sample input for prediction
+sample_input = [[1.5, 4, 6]]
 
-#Fitting model with trainig data
-regressor.fit(x, y)
+# Make a prediction
+predicted_co2_emission = linear_model.predict(sample_input)
 
-# Saving model to disk
-# Pickle serializes objects so they can be saved to a file, and loaded in a program again later on.
-pickle.dump(regressor, open('linear_model.pkl','wb'))
-
-'''
-#Loading model to compare the results
-linear_model = pickle.load(open('linear_model.pkl','rb'))
-print(model.predict([[2.6, 8, 10.1]]))
-'''
+# Print the prediction
+print(f"Predicted CO2 Emission: {predicted_co2_emission[0]}")
