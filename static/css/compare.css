@@ -212,30 +212,3 @@ option {
         margin: 4px 0;
     }
 }
-/* {% if specs1 %}
-<h2>Model 1 Specs:</h2>
-<ul>
-    <li>Make: {{ specs1['Make'] }}</li>
-    <li>Model: {{ specs1['Model'] }}</li>
-    <li>Fuel Consumption Comb (L/100 km): {{ specs1['Fuel Consumption Comb (L/100 km)'] }}</li>
-    <li>CO2 Emissions (g/km): {{ specs1['CO2 Emissions (g/km)'] }}</li>
-    <li>Engine Size (L): {{ specs1['Engine Size (L)'] }}</li>
-    <li>Cylinders: {{ specs1['Cylinders'] }}</li>
-    <li>Vehicle Class: {{ specs1['Vehicle Class'] }}</li>
-    <li>Transmission: {{ specs1['Transmission'] }}</li>
-</ul>
-{% endif %}
-
-{% if specs2 %}
-<h2>Model 2 Specs:</h2>
-<ul>
-    <li>Make: {{ specs2['Make'] }}</li>
-    <li>Model: {{ specs2['Model'] }}</li>
-    <li>Fuel Consumption Comb (L/100 km): {{ specs2['Fuel Consumption Comb (L/100 km)'] }}</li>
-    <li>CO2 Emissions (g/km): {{ specs2['CO2 Emissions (g/km)'] }}</li>
-    <li>Engine Size (L): {{ specs2['Engine Size (L)'] }}</li>
-    <li>Cylinders: {{ specs2['Cylinders'] }}</li>
-    <li>Vehicle Class: {{ specs2['Vehicle Class'] }}</li>
-    <li>Transmission: {{ specs2['Transmission'] }}</li>
-</ul>
-{% endif %} */

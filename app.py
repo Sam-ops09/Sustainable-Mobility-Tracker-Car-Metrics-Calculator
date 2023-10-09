@@ -96,7 +96,7 @@ def index():
     selected_company = request.args.get('selected_company', 'default_company')
     return render_template('index.html', selected_company=selected_company)
 
-# Define the route for displaying scatter plots
+# Define the route for displaying line plots
 @app.route('/graph_representation')
 def graph_representation():
     selected_make = request.args.get('selected_make')
