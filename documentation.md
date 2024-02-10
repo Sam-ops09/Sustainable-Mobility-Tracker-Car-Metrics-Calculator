@@ -1,4 +1,3 @@
-```markdown
 # Fuel Consumption Prediction Web App
 
 This Flask web application predicts fuel consumption for vehicles using machine learning models. The project focuses on improving prediction accuracy and reducing error rates across various machine learning algorithms.
@@ -7,6 +6,7 @@ This Flask web application predicts fuel consumption for vehicles using machine 
 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
+- [Project Highlights](#project-highlights)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
@@ -61,6 +61,18 @@ The primary focus of this project is to enhance prediction accuracy and reduce e
 
 2. **Model Selection Based on Prediction Accuracy**:
    - The application dynamically selects the best model for a given input by comparing predictions across all models. The model with the closest prediction to the actual value is chosen.
+
+3. **Fallback Mechanism** (Not Mentioned):
+   - A fallback mechanism is implemented to handle cases where the given input does not exist in the CSV file or the input values don't match. In such scenarios, a default prediction from a selected model is used, introducing a level of robustness to the application.
+
+4. **Error Percentage Calculation**:
+   - The application calculates the error percentage based on the closest prediction and the actual CO2 value. This provides a quantitative measure of prediction accuracy, allowing users to assess the reliability of the predicted values.
+
+5. **Model Training and Loading**:
+   - Machine learning models are trained and saved as pickle files (`*.pkl`). During runtime, these pre-trained models are loaded into the application. This ensures that the models have already learned patterns from historical data, contributing to improved accuracy.
+
+6. **Data Loading and Organization**:
+   - Fuel consumption data is loaded from the CSV file and organized by car make and model. This structured organization allows for efficient retrieval of data relevant to the selected input, facilitating accurate predictions.
 
 ## Usage
 
