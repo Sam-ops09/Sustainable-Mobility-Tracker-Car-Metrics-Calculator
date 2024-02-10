@@ -7,6 +7,7 @@ This Flask web application predicts fuel consumption for vehicles using machine 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Project Highlights](#project-highlights)
+- [Handling Outliers](#handling-outliers)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
@@ -73,6 +74,22 @@ The primary focus of this project is to enhance prediction accuracy and reduce e
 
 6. **Data Loading and Organization**:
    - Fuel consumption data is loaded from the CSV file and organized by car make and model. This structured organization allows for efficient retrieval of data relevant to the selected input, facilitating accurate predictions.
+
+## Handling Outliers
+
+Outliers in the data can significantly impact the performance of machine learning models. To address this issue, the following techniques have been employed:
+
+1. **Data Preprocessing**:
+   - Prior to training the machine learning models, the dataset undergoes preprocessing steps. These steps include identifying and handling outliers, ensuring a cleaner and more robust dataset.
+
+2. **Outlier Detection Techniques**:
+   - Statistical techniques such as Z-score and IQR (Interquartile Range) are employed to detect and handle outliers. Outliers are either removed or transformed to mitigate their impact on model training.
+
+3. **Feature Scaling**:
+   - Feature scaling techniques, such as Min-Max scaling or Standardization, are applied to ensure that outliers do not disproportionately influence the learning process. Scaling helps in achieving better convergence during model training.
+
+4. **Robust Models**:
+   - The inclusion of robust machine learning models, such as Random Forest and XGBoost, inherently provides resilience against outliers. These models are less sensitive to extreme values, contributing to improved overall performance.
 
 ## Usage
 
