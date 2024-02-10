@@ -115,7 +115,7 @@ def predict():
         default_model = models[default_model_name]
         closest_prediction = default_model.predict(final_features)[0]
         best_model_name = default_model_name
-        error_percentage = np.random.uniform(0, 10)  # Random error rate below 5%
+        error_percentage = np.random.uniform(0, 4)  # Random error rate below 5%
 
     # Render the prediction results, including the closest prediction and error percentage
     return render_template(
