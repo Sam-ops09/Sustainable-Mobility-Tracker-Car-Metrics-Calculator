@@ -56,7 +56,7 @@ The application is now running locally at `http://127.0.0.1:5000/`.
    - Libraries such as `csv`, `numpy` (as `np`), `Flask`, `request`, `render_template`, and `pickle` are imported.
 
 2. **Loading Trained Models**:
-   - Pre-trained machine learning models (linear regression, ridge regression, lasso regression, and elastic net regression) are loaded using `pickle` into a dictionary called `models`.
+   - Pre-trained machine learning models (linear regression, ridge regression, lasso regression, elastic net regression, neural network, XGBoost, random forest) are loaded using `pickle` into a dictionary called `models`.
 
 3. **Loading Fuel Consumption Data**:
    - The `load_fuel_consumption_data()` function reads fuel consumption data from 'FuelConsumption.csv', organizing it by car make and model in the `fuel_consumption_data` dictionary. Unique car makes are stored in the `makes` set.
@@ -68,7 +68,7 @@ The application is now running locally at `http://127.0.0.1:5000/`.
    - The home route, defined by the `home()` function, allows users to select a car make from a dropdown menu. The selected make is passed as `selected_company` to the 'index.html' template.
 
 6. **Prediction Route** (`/predict`):
-   - The `predict()` function processes a POST request, extracts input features from a form, and makes predictions using the loaded machine learning models. The best model is selected based on the highest prediction and results are rendered on 'index.html'.
+   - The `predict()` function processes a POST request, extracts input features from a form, and makes predictions using the loaded machine learning models. The best model is selected based on the highest prediction, and results are rendered on 'index.html'.
 
 7. **Index Route** (`/index`):
    - Similar to the home route, it allows users to select a car make from a dropdown menu. The selected make is passed as `selected_company` to the 'index.html' template.
@@ -117,18 +117,9 @@ fuel-consumption-prediction/
     ├── ridge_model.pkl        
     ├── lasso_model.pkl         
     ├── elastic_net_model.pkl   
-    ├── linear_model.py       
-    ├── ridge_model.py        
-    ├── lasso_model.py        
-    ├── elastic_net_model.py
-    ├── neural_network_model.py
     ├── neural_network_model.pkl
-    ├── random_forest_model.py
     ├── random_forest_model.pkl
-    ├── ridge_model.py
-    ├── ridge_model.pkl
-    ├── XGBoost_model.py
-    ├── XGBoost_model.py
+    ├── XGBoost_model.pkl
     ├── requirement.txt
     ├── FuelConsumption.csv     
     ├── templates/             
@@ -148,4 +139,3 @@ If you'd like to contribute to this project, please open an issue or submit a pu
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-```
