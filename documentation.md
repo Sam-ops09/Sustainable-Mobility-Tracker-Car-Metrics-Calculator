@@ -1,11 +1,12 @@
 # Fuel Consumption Prediction Web App
 
-This Flask web application is designed to predict fuel consumption for vehicles using machine learning models. It allows users to input certain features of a vehicle and receive a prediction from a selection of trained models.
+This Flask web application predicts fuel consumption for vehicles using machine learning models. The project focuses on improving prediction accuracy and reducing error rates across various machine learning algorithms.
 
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
+- [Project Highlights](#project-highlights)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
@@ -13,7 +14,7 @@ This Flask web application is designed to predict fuel consumption for vehicles 
 
 ## Prerequisites
 
-Before running the application, make sure you have the following prerequisites installed:
+Before running the application, ensure the following dependencies are installed:
 
 - Python 3.x
 - Flask
@@ -21,7 +22,7 @@ Before running the application, make sure you have the following prerequisites i
 - scikit-learn
 - pickle
 
-You can install these dependencies using `pip`:
+Install dependencies using `pip`:
 
 ```bash
 pip install flask numpy scikit-learn
@@ -47,64 +48,48 @@ cd fuel-consumption-prediction
 python app.py
 ```
 
-The application should now be running locally at `http://127.0.0.1:5000/`.
+The application is now running locally at `http://127.0.0.1:5000/`.
 
-## Working Explanation
+## Project Highlights
 
-1. **Importing Dependencies**:
-   - You start by importing necessary libraries such as `csv`, `numpy` (as `np`), `Flask`, `request`, `render_template`, and `pickle`.
+### Error Rate Reduction and Accuracy Improvement
 
-2. **Loading Trained Models**:
-   - You load pre-trained machine learning models (linear regression, ridge regression, lasso regression, and elastic net regression) using `pickle`. These models are stored in a dictionary called `models`.
+The primary focus of this project is to enhance prediction accuracy and reduce error rates. The following strategies have been implemented:
 
-3. **Loading Fuel Consumption Data**:
-   - You define a function `load_fuel_consumption_data()` to read fuel consumption data from a CSV file named 'FuelConsumption.csv'. The data is stored in a dictionary `fuel_consumption_data`, which organizes the data by car make and model. You also create a set `makes` to store unique car makes.
+1. **Multiple Models Integration**:
+   - Various machine learning models, including linear regression, ridge regression, lasso regression, elastic net regression, neural network models, XGBoost, and Random Forest, are integrated to benefit from diverse modeling approaches.
 
-4. **Flask App Initialization**:
-   - You initialize a Flask app with `app = Flask(__name__)`.
+2. **Model Selection Based on Prediction Accuracy**:
+   - The application dynamically selects the best model for a given input by comparing predictions across all models. The model with the closest prediction to the actual value is chosen.
 
-5. **Home Route** (`/`):
-   - The home route is defined with the `home()` function. It allows users to select a car make from a dropdown menu. The selected make is passed as a parameter (`selected_company`) to the 'index.html' template.
+3. **Fallback Mechanism** (Not Mentioned):
+   - A fallback mechanism is implemented to handle cases where the given input does not exist in the CSV file or the input values don't match. In such scenarios, a default prediction from a selected model is used, introducing a level of robustness to the application.
 
-6. **Prediction Route** (`/predict`):
-   - The prediction route is defined with the `predict()` function. It processes a POST request, extracts input features from a form, and makes predictions using the loaded machine learning models. It selects the best model based on the highest prediction and renders the result on the 'index.html' template.
+4. **Error Percentage Calculation**:
+   - The application calculates the error percentage based on the closest prediction and the actual CO2 value. This provides a quantitative measure of prediction accuracy, allowing users to assess the reliability of the predicted values.
 
-7. **Index Route** (`/index`):
-   - This route is similar to the home route but is accessed separately. It also allows users to select a car make from a dropdown menu, and the selected make is passed as `selected_company` to the 'index.html' template.
+5. **Model Training and Loading**:
+   - Machine learning models are trained and saved as pickle files (`*.pkl`). During runtime, these pre-trained models are loaded into the application. This ensures that the models have already learned patterns from historical data, contributing to improved accuracy.
 
-8. **Graph Representation Route** (`/graph_representation`):
-   - This route is used to display scatter plots based on the selected car make. It takes `selected_make` as a parameter and renders the 'graph.html' template, passing the fuel consumption data and makes for plotting.
-
-9. **Function to Get Unique Makes and Models**:
-   - `get_unique_models()` extracts unique car makes and their associated models from the data.
-
-10. **Function to Get Model Specifications**:
-    - `get_model_specs()` retrieves specifications (e.g., fuel consumption, CO2 emissions) based on the selected car make and model.
-
-11. **Compare Route** (`/compare`):
-    - This route allows users to compare specifications of two different vehicle models. Users can select two makes and models from dropdown menus, and the selected specifications are displayed on the 'compare.html' template.
-
-12. **Running the App**:
-    - The app runs with `if __name__ == "__main__": app.run(debug=True)`.
-
-Overall, the Flask application loads pre-trained machine learning models, handles user input and predictions, displays data visualizations, and allows users to compare vehicle specifications. It combines machine learning with web functionality to provide an interactive experience for users interested in exploring and comparing vehicle data.
+6. **Data Loading and Organization**:
+   - Fuel consumption data is loaded from the CSV file and organized by car make and model. This structured organization allows for efficient retrieval of data relevant to the selected input, facilitating accurate predictions.
 
 ## Usage
 
 ### Home Page
 
-- Access the home page by opening a web browser and navigating to `http://127.0.0.1:5000/`.
+- Access the home page at `http://127.0.0.1:5000/`.
 - Select a vehicle make (company) from the dropdown menu.
 - Click the "Predict" button to see the fuel consumption prediction using the best model.
 
 ### Comparing Vehicle Models
 
-- Access the comparison page by clicking on the "Compare Vehicle Models" link in the navigation bar.
+- Access the comparison page by clicking "Compare Vehicle Models" in the navigation bar.
 - Select two different vehicle makes and models to compare their specifications.
 
 ### Viewing Scatter Plots
 
-- Access the scatter plot page by clicking on the "View Scatter Plots" link in the navigation bar.
+- Access the scatter plot page by clicking "View Scatter Plots" in the navigation bar.
 - Select a vehicle make to view scatter plots of fuel consumption data for different models of that make.
 
 ## Project Structure
@@ -113,20 +98,33 @@ The project has the following structure:
 
 ```
 fuel-consumption-prediction/
-    ├── app.py                  # Flask application code
-    ├── linear_model.pkl        # Trained linear regression model
-    ├── ridge_model.pkl         # Trained ridge regression model
-    ├── lasso_model.pkl         # Trained lasso regression model
-    ├── elastic_net_model.pkl   # Trained elastic net model
-    ├── FuelConsumption.csv     # Fuel consumption dataset
-    ├── templates/              # HTML templates
-    │   ├── index.html         # Home page template
-    │   ├── compare.html       # Model comparison template
-    │   ├── graph.html         # Scatter plot template
-    ├── static/                 # Static files (CSS, JavaScript)
-    │   ├── style.css          # CSS styles
-    │   ├── script.js          # JavaScript for interactive features
-    ├── README.md               # Project documentation
+    ├── app.py                
+    ├── linear_model.pkl       
+    ├── ridge_model.pkl        
+    ├── lasso_model.pkl         
+    ├── elastic_net_model.pkl   
+    ├── linear_model.py       
+    ├── ridge_model.py        
+    ├── lasso_model.py        
+    ├── elastic_net_model.py
+    ├── neural_network_model.py
+    ├── neural_network_model.pkl
+    ├── random_forest_model.py
+    ├── random_forest_model.pkl
+    ├── ridge_model.py
+    ├── ridge_model.pkl
+    ├── XGBoost_model.py
+    ├── XGBoost_model.py
+    ├── requirement.txt
+    ├── FuelConsumption.csv     
+    ├── templates/             
+    │   ├── index.html        
+    │   ├── compare.html       
+    │   ├── graph.html   
+    ├── static/                 
+    │   ├── style.css          
+    │   ├── script.js        
+    ├── README.md     
 ```
 
 ## Contributing
