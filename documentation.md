@@ -1,7 +1,7 @@
 ```markdown
 # Fuel Consumption Prediction Web App
 
-This Flask web application predicts fuel consumption for vehicles using machine learning models. Users input specific vehicle features and receive predictions from pre-trained models.
+This Flask web application predicts fuel consumption for vehicles using machine learning models. The project focuses on improving prediction accuracy and reducing error rates across various machine learning algorithms.
 
 ## Table of Contents
 
@@ -50,43 +50,17 @@ python app.py
 
 The application is now running locally at `http://127.0.0.1:5000/`.
 
-## Working Explanation
+## Project Highlights
 
-1. **Importing Dependencies**:
-   - Libraries such as `csv`, `numpy` (as `np`), `Flask`, `request`, `render_template`, and `pickle` are imported.
+### Error Rate Reduction and Accuracy Improvement
 
-2. **Loading Trained Models**:
-   - Pre-trained machine learning models (linear regression, ridge regression, lasso regression, and elastic net regression) are loaded using `pickle` into a dictionary called `models`.
+The primary focus of this project is to enhance prediction accuracy and reduce error rates. The following strategies have been implemented:
 
-3. **Loading Fuel Consumption Data**:
-   - The `load_fuel_consumption_data()` function reads fuel consumption data from 'FuelConsumption.csv', organizing it by car make and model in the `fuel_consumption_data` dictionary. Unique car makes are stored in the `makes` set.
+1. **Multiple Models Integration**:
+   - Various machine learning models, including linear regression, ridge regression, lasso regression, elastic net regression, neural network models, XGBoost, and Random Forest, are integrated to benefit from diverse modeling approaches.
 
-4. **Flask App Initialization**:
-   - A Flask app is initialized with `app = Flask(__name__)`.
-
-5. **Home Route** (`/`):
-   - The home route, defined by the `home()` function, allows users to select a car make from a dropdown menu. The selected make is passed as `selected_company` to the 'index.html' template.
-
-6. **Prediction Route** (`/predict`):
-   - The `predict()` function processes a POST request, extracts input features from a form, and makes predictions using the loaded machine learning models. The best model is selected based on the highest prediction and results are rendered on 'index.html'.
-
-7. **Index Route** (`/index`):
-   - Similar to the home route, it allows users to select a car make from a dropdown menu. The selected make is passed as `selected_company` to the 'index.html' template.
-
-8. **Graph Representation Route** (`/graph_representation`):
-   - This route displays scatter plots based on the selected car make. It takes `selected_make` as a parameter and renders the 'graph.html' template, passing fuel consumption data and makes for plotting.
-
-9. **Function to Get Unique Makes and Models**:
-   - `get_unique_models()` extracts unique car makes and their associated models from the data.
-
-10. **Function to Get Model Specifications**:
-    - `get_model_specs()` retrieves specifications (e.g., fuel consumption, CO2 emissions) based on the selected car make and model.
-
-11. **Compare Route** (`/compare`):
-    - Allows users to compare specifications of two different vehicle models. Users can select two makes and models from dropdown menus, and selected specifications are displayed on 'compare.html'.
-
-12. **Running the App**:
-    - The app runs with `if __name__ == "__main__": app.run(debug=True)`.
+2. **Model Selection Based on Prediction Accuracy**:
+   - The application dynamically selects the best model for a given input by comparing predictions across all models. The model with the closest prediction to the actual value is chosen.
 
 ## Usage
 
