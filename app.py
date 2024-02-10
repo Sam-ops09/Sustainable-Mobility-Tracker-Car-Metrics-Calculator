@@ -167,7 +167,7 @@ def get_unique_models():
 def get_model_specs(make, model):
     specs = {}
 
-    # Open the CSV file in read mode
+    # Open the CSV file in read mode -
     with open('FuelConsumption.csv', 'r') as csv_file:
         # Create a CSV reader object
         reader = csv.DictReader(csv_file)
