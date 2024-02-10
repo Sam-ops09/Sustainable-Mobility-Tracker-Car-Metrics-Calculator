@@ -4,13 +4,13 @@ This documentation provides an overview of the Fuel Consumption Prediction Web A
 
 ## Table of Contents
 
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Project Highlights](#project-highlights)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
+- [Prerequisites]
+- [Installation]
+- [Project Highlights]
+- [Usage]
+- [Project Structure]
+- [Contributing]
+- [License]
 
 ## Introduction
 
