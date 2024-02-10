@@ -4,15 +4,13 @@ This documentation provides an overview of the Fuel Consumption Prediction Web A
 
 ## Table of Contents
 
-1. [Introduction](#introduction)
-2. [Installation](#installation)
-3. [Usage](#usage)
-4. [Documentation](#documentation)
-   - [Error Rate Reduction](#error-rate-reduction)
-   - [Accuracy Improvement](#accuracy-improvement)
-   - [Handling Outliers](#handling-outliers)
-5. [Contributing](#contributing)
-6. [License](#license)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Project Highlights](#project-highlights)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Introduction
 
@@ -47,6 +45,22 @@ To run the application locally, follow these steps:
     ```
 
 5. Access the application in your web browser at `http://localhost:5000`.
+
+## Handling Outliers
+
+Outliers in the data can significantly impact the performance of machine learning models. To address this issue, the following techniques have been employed:
+
+1. **Data Preprocessing**:
+   - Prior to training the machine learning models, the dataset undergoes preprocessing steps. These steps include identifying and handling outliers, ensuring a cleaner and more robust dataset.
+
+2. **Outlier Detection Techniques**:
+   - Statistical techniques such as Z-score and IQR (Interquartile Range) are employed to detect and handle outliers. Outliers are either removed or transformed to mitigate their impact on model training.
+
+3. **Feature Scaling**:
+   - Feature scaling techniques, such as Min-Max scaling or Standardization, are applied to ensure that outliers do not disproportionately influence the learning process. Scaling helps in achieving better convergence during model training.
+
+4. **Robust Models**:
+   - The inclusion of robust machine learning models, such as Random Forest and XGBoost, inherently provides resilience against outliers. These models are less sensitive to extreme values, contributing to improved overall performance.
 
 ## Usage
 
