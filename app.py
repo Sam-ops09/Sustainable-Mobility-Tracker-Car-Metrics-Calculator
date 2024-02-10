@@ -3,6 +3,8 @@
 import csv
 import numpy as np
 from flask import Flask, request, render_template
+from sklearn.ensemble import VotingRegressor
+from sklearn.preprocessing import StandardScaler
 import pickle
 
 # Create a Flask web application instance
@@ -54,6 +56,21 @@ def load_fuel_consumption_data():
 
 # Load fuel consumption data and get a list of unique companies (makes)
 fuel_consumption_data, companies = load_fuel_consumption_data()
+
+# Function to handle outliers in the data
+def handle_outliers(data, threshold=3):
+    # Calculate z-scores for the data
+    z_scores = (data - np.mean(data)) / np.std(data)
+    # Identify outliers using the z-scores
+    outliers = np.abs(z_scores) > threshold
+    # Replace outliers with the median value
+    data[outliers] = np.median(data)
+    return data
+
+# Handle outliers in the fuel consumption data
+for company, models_data in fuel_consumption_data.items():
+    for model, consumption_values in models_data.items():
+        fuel_consumption_data[company][model] = handle_outliers(np.array(consumption_values))
 
 # Define the home route
 @app.route('/')
@@ -138,8 +155,17 @@ def index():
 def graph_representation():
     # Get the selected make from the request
     selected_make = request.args.get('selected_make')
+    
+    # Convert fuel consumption data to lists before passing to render_template
+    fuel_consumption_data_serializable = {
+        make: {
+            model: consumption.tolist() for model, consumption in models_data.items()
+        } for make, models_data in fuel_consumption_data.items()
+    }
+
     # Render the graph template with fuel consumption data, makes, and the selected make
-    return render_template('graph.html', fuel_consumption_data=fuel_consumption_data, makes=companies, selected_make=selected_make)
+    return render_template('graph.html', fuel_consumption_data=fuel_consumption_data_serializable, makes=companies, selected_make=selected_make)
+
 
 # Function to get unique makes and their associated models
 def get_unique_models():

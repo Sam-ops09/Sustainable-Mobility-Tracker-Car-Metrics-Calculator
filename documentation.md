@@ -1,136 +1,94 @@
-# Fuel Consumption Prediction Web App
+# Fuel Consumption Prediction Web Application Documentation
 
-This Flask web application predicts fuel consumption for vehicles using machine learning models. The project focuses on improving prediction accuracy and reducing error rates across various machine learning algorithms.
+This documentation provides an overview of the Fuel Consumption Prediction Web Application. The application uses machine learning models to predict CO2 emissions based on input features such as engine size, cylinders, and fuel consumption.
 
 ## Table of Contents
 
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Project Highlights](#project-highlights)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
+1. [Introduction](#introduction)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Documentation](#documentation)
+   - [Error Rate Reduction](#error-rate-reduction)
+   - [Accuracy Improvement](#accuracy-improvement)
+   - [Handling Outliers](#handling-outliers)
+5. [Contributing](#contributing)
+6. [License](#license)
 
-## Prerequisites
+## Introduction
 
-Before running the application, ensure the following dependencies are installed:
-
-- Python 3.x
-- Flask
-- NumPy
-- scikit-learn
-- pickle
-
-Install dependencies using `pip`:
-
-```bash
-pip install flask numpy scikit-learn
-```
+The Fuel Consumption Prediction Web Application is built using Flask, a lightweight WSGI web application framework. It provides a user-friendly interface for users to input vehicle specifications and get predictions for CO2 emissions.
 
 ## Installation
 
-1. Clone this repository to your local machine:
+To run the application locally, follow these steps:
 
-```bash
-git clone https://github.com/yourusername/fuel-consumption-prediction.git
-```
+1. Clone the repository:
 
-2. Change your working directory to the project folder:
+    ```bash
+    git clone https://github.com/your-username/fuel-consumption-prediction.git
+    ```
 
-```bash
-cd fuel-consumption-prediction
-```
+2. Navigate to the project directory:
 
-3. Run the Flask application:
+    ```bash
+    cd fuel-consumption-prediction
+    ```
 
-```bash
-python app.py
-```
+3. Install dependencies:
 
-The application is now running locally at `http://127.0.0.1:5000/`.
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-## Project Highlights
+4. Run the Flask application:
 
-### Error Rate Reduction and Accuracy Improvement
+    ```bash
+    python app.py
+    ```
 
-The primary focus of this project is to enhance prediction accuracy and reduce error rates. The following strategies have been implemented:
-
-1. **Multiple Models Integration**:
-   - Various machine learning models, including linear regression, ridge regression, lasso regression, elastic net regression, neural network models, XGBoost, and Random Forest, are integrated to benefit from diverse modeling approaches.
-
-2. **Model Selection Based on Prediction Accuracy**:
-   - The application dynamically selects the best model for a given input by comparing predictions across all models. The model with the closest prediction to the actual value is chosen.
-
-3. **Fallback Mechanism** (Not Mentioned):
-   - A fallback mechanism is implemented to handle cases where the given input does not exist in the CSV file or the input values don't match. In such scenarios, a default prediction from a selected model is used, introducing a level of robustness to the application.
-
-4. **Error Percentage Calculation**:
-   - The application calculates the error percentage based on the closest prediction and the actual CO2 value. This provides a quantitative measure of prediction accuracy, allowing users to assess the reliability of the predicted values.
-
-5. **Model Training and Loading**:
-   - Machine learning models are trained and saved as pickle files (`*.pkl`). During runtime, these pre-trained models are loaded into the application. This ensures that the models have already learned patterns from historical data, contributing to improved accuracy.
-
-6. **Data Loading and Organization**:
-   - Fuel consumption data is loaded from the CSV file and organized by car make and model. This structured organization allows for efficient retrieval of data relevant to the selected input, facilitating accurate predictions.
+5. Access the application in your web browser at `http://localhost:5000`.
 
 ## Usage
 
-### Home Page
+Once the application is running, users can:
 
-- Access the home page at `http://127.0.0.1:5000/`.
-- Select a vehicle make (company) from the dropdown menu.
-- Click the "Predict" button to see the fuel consumption prediction using the best model.
+- Input vehicle specifications (engine size, cylinders, fuel consumption) in the provided form.
+- Receive predictions for CO2 emissions based on the selected machine learning model.
 
-### Comparing Vehicle Models
+## Documentation
 
-- Access the comparison page by clicking "Compare Vehicle Models" in the navigation bar.
-- Select two different vehicle makes and models to compare their specifications.
+### Error Rate Reduction
 
-### Viewing Scatter Plots
+To reduce error rates and improve prediction accuracy, the following strategies were implemented:
 
-- Access the scatter plot page by clicking "View Scatter Plots" in the navigation bar.
-- Select a vehicle make to view scatter plots of fuel consumption data for different models of that make.
+- **Model Selection**: The application uses a Voting Regressor ensemble model that combines multiple machine learning models, including linear regression, ridge regression, lasso regression, elastic net regression, neural network regression, XGBoost regression, and random forest regression. By leveraging the strengths of different models, the ensemble model aims to minimize errors and provide more accurate predictions.
 
-## Project Structure
+- **Default Prediction**: If the given input does not exist in the dataset or input values don't match, the application provides a default prediction using a selected model (e.g., linear regression). This helps handle edge cases and ensures users receive predictions even in scenarios where input data is incomplete or unavailable.
 
-The project has the following structure:
+### Accuracy Improvement
 
-```
-fuel-consumption-prediction/
-    ├── app.py                
-    ├── linear_model.pkl       
-    ├── ridge_model.pkl        
-    ├── lasso_model.pkl         
-    ├── elastic_net_model.pkl   
-    ├── linear_model.py       
-    ├── ridge_model.py        
-    ├── lasso_model.py        
-    ├── elastic_net_model.py
-    ├── neural_network_model.py
-    ├── neural_network_model.pkl
-    ├── random_forest_model.py
-    ├── random_forest_model.pkl
-    ├── ridge_model.py
-    ├── ridge_model.pkl
-    ├── XGBoost_model.py
-    ├── XGBoost_model.py
-    ├── requirement.txt
-    ├── FuelConsumption.csv     
-    ├── templates/             
-    │   ├── index.html        
-    │   ├── compare.html       
-    │   ├── graph.html   
-    ├── static/                 
-    │   ├── style.css          
-    │   ├── script.js        
-    ├── README.md     
-```
+To improve prediction accuracy, the following techniques were employed:
+
+- **Outlier Handling**: Outliers in the fuel consumption data were identified and handled to prevent them from negatively impacting the model's performance. The `handle_outliers` function utilizes z-scores to identify outliers and replaces them with the median value. This preprocessing step helps improve the accuracy of predictions by reducing the influence of outlier data points.
+
+### Handling Outliers
+
+Outliers in the fuel consumption data were handled using the `handle_outliers` function, which follows these steps:
+
+1. **Calculate Z-Scores**: Z-scores are calculated for the data using the formula `(data - mean) / standard deviation`.
+
+2. **Identify Outliers**: Data points with absolute z-scores greater than a specified threshold (default is 3) are considered outliers.
+
+3. **Replace Outliers**: Outliers are replaced with the median value of the data. This helps mitigate the impact of outliers on model training and prediction.
 
 ## Contributing
 
-If you'd like to contribute to this project, please open an issue or submit a pull request. Contributions are welcome!
+Contributions to the Fuel Consumption Prediction Web Application are welcome! If you encounter any issues, have feature requests, or would like to contribute enhancements, please open an issue or submit a pull request on GitHub.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+This documentation provides an overview of the Fuel Consumption Prediction Web Application, highlighting error rate reduction, accuracy improvement, and handling outliers. For detailed technical documentation of the codebase, refer to the source code and inline comments in the repository.
