@@ -1,6 +1,7 @@
+```markdown
 # Fuel Consumption Prediction Web App
 
-This Flask web application is designed to predict fuel consumption for vehicles using machine learning models. It allows users to input certain features of a vehicle and receive a prediction from a selection of trained models.
+This Flask web application predicts fuel consumption for vehicles using machine learning models. Users input specific vehicle features and receive predictions from pre-trained models.
 
 ## Table of Contents
 
@@ -13,7 +14,7 @@ This Flask web application is designed to predict fuel consumption for vehicles 
 
 ## Prerequisites
 
-Before running the application, make sure you have the following prerequisites installed:
+Before running the application, ensure the following dependencies are installed:
 
 - Python 3.x
 - Flask
@@ -21,7 +22,7 @@ Before running the application, make sure you have the following prerequisites i
 - scikit-learn
 - pickle
 
-You can install these dependencies using `pip`:
+Install dependencies using `pip`:
 
 ```bash
 pip install flask numpy scikit-learn
@@ -47,33 +48,33 @@ cd fuel-consumption-prediction
 python app.py
 ```
 
-The application should now be running locally at `http://127.0.0.1:5000/`.
+The application is now running locally at `http://127.0.0.1:5000/`.
 
 ## Working Explanation
 
 1. **Importing Dependencies**:
-   - You start by importing necessary libraries such as `csv`, `numpy` (as `np`), `Flask`, `request`, `render_template`, and `pickle`.
+   - Libraries such as `csv`, `numpy` (as `np`), `Flask`, `request`, `render_template`, and `pickle` are imported.
 
 2. **Loading Trained Models**:
-   - You load pre-trained machine learning models (linear regression, ridge regression, lasso regression, and elastic net regression) using `pickle`. These models are stored in a dictionary called `models`.
+   - Pre-trained machine learning models (linear regression, ridge regression, lasso regression, and elastic net regression) are loaded using `pickle` into a dictionary called `models`.
 
 3. **Loading Fuel Consumption Data**:
-   - You define a function `load_fuel_consumption_data()` to read fuel consumption data from a CSV file named 'FuelConsumption.csv'. The data is stored in a dictionary `fuel_consumption_data`, which organizes the data by car make and model. You also create a set `makes` to store unique car makes.
+   - The `load_fuel_consumption_data()` function reads fuel consumption data from 'FuelConsumption.csv', organizing it by car make and model in the `fuel_consumption_data` dictionary. Unique car makes are stored in the `makes` set.
 
 4. **Flask App Initialization**:
-   - You initialize a Flask app with `app = Flask(__name__)`.
+   - A Flask app is initialized with `app = Flask(__name__)`.
 
 5. **Home Route** (`/`):
-   - The home route is defined with the `home()` function. It allows users to select a car make from a dropdown menu. The selected make is passed as a parameter (`selected_company`) to the 'index.html' template.
+   - The home route, defined by the `home()` function, allows users to select a car make from a dropdown menu. The selected make is passed as `selected_company` to the 'index.html' template.
 
 6. **Prediction Route** (`/predict`):
-   - The prediction route is defined with the `predict()` function. It processes a POST request, extracts input features from a form, and makes predictions using the loaded machine learning models. It selects the best model based on the highest prediction and renders the result on the 'index.html' template.
+   - The `predict()` function processes a POST request, extracts input features from a form, and makes predictions using the loaded machine learning models. The best model is selected based on the highest prediction and results are rendered on 'index.html'.
 
 7. **Index Route** (`/index`):
-   - This route is similar to the home route but is accessed separately. It also allows users to select a car make from a dropdown menu, and the selected make is passed as `selected_company` to the 'index.html' template.
+   - Similar to the home route, it allows users to select a car make from a dropdown menu. The selected make is passed as `selected_company` to the 'index.html' template.
 
 8. **Graph Representation Route** (`/graph_representation`):
-   - This route is used to display scatter plots based on the selected car make. It takes `selected_make` as a parameter and renders the 'graph.html' template, passing the fuel consumption data and makes for plotting.
+   - This route displays scatter plots based on the selected car make. It takes `selected_make` as a parameter and renders the 'graph.html' template, passing fuel consumption data and makes for plotting.
 
 9. **Function to Get Unique Makes and Models**:
    - `get_unique_models()` extracts unique car makes and their associated models from the data.
@@ -82,29 +83,27 @@ The application should now be running locally at `http://127.0.0.1:5000/`.
     - `get_model_specs()` retrieves specifications (e.g., fuel consumption, CO2 emissions) based on the selected car make and model.
 
 11. **Compare Route** (`/compare`):
-    - This route allows users to compare specifications of two different vehicle models. Users can select two makes and models from dropdown menus, and the selected specifications are displayed on the 'compare.html' template.
+    - Allows users to compare specifications of two different vehicle models. Users can select two makes and models from dropdown menus, and selected specifications are displayed on 'compare.html'.
 
 12. **Running the App**:
     - The app runs with `if __name__ == "__main__": app.run(debug=True)`.
-
-Overall, the Flask application loads pre-trained machine learning models, handles user input and predictions, displays data visualizations, and allows users to compare vehicle specifications. It combines machine learning with web functionality to provide an interactive experience for users interested in exploring and comparing vehicle data.
 
 ## Usage
 
 ### Home Page
 
-- Access the home page by opening a web browser and navigating to `http://127.0.0.1:5000/`.
+- Access the home page at `http://127.0.0.1:5000/`.
 - Select a vehicle make (company) from the dropdown menu.
 - Click the "Predict" button to see the fuel consumption prediction using the best model.
 
 ### Comparing Vehicle Models
 
-- Access the comparison page by clicking on the "Compare Vehicle Models" link in the navigation bar.
+- Access the comparison page by clicking "Compare Vehicle Models" in the navigation bar.
 - Select two different vehicle makes and models to compare their specifications.
 
 ### Viewing Scatter Plots
 
-- Access the scatter plot page by clicking on the "View Scatter Plots" link in the navigation bar.
+- Access the scatter plot page by clicking "View Scatter Plots" in the navigation bar.
 - Select a vehicle make to view scatter plots of fuel consumption data for different models of that make.
 
 ## Project Structure
@@ -130,6 +129,7 @@ fuel-consumption-prediction/
     ├── ridge_model.pkl
     ├── XGBoost_model.py
     ├── XGBoost_model.py
+    ├── requirement.txt
     ├── FuelConsumption.csv     
     ├── templates/             
     │   ├── index.html        
@@ -148,3 +148,4 @@ If you'd like to contribute to this project, please open an issue or submit a pu
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+```
