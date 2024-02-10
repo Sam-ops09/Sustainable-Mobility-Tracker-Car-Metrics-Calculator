@@ -113,20 +113,32 @@ The project has the following structure:
 
 ```
 fuel-consumption-prediction/
-    ├── app.py                  # Flask application code
-    ├── linear_model.pkl        # Trained linear regression model
-    ├── ridge_model.pkl         # Trained ridge regression model
-    ├── lasso_model.pkl         # Trained lasso regression model
-    ├── elastic_net_model.pkl   # Trained elastic net model
-    ├── FuelConsumption.csv     # Fuel consumption dataset
-    ├── templates/              # HTML templates
-    │   ├── index.html         # Home page template
-    │   ├── compare.html       # Model comparison template
-    │   ├── graph.html         # Scatter plot template
-    ├── static/                 # Static files (CSS, JavaScript)
-    │   ├── style.css          # CSS styles
-    │   ├── script.js          # JavaScript for interactive features
-    ├── README.md               # Project documentation
+    ├── app.py                
+    ├── linear_model.pkl       
+    ├── ridge_model.pkl        
+    ├── lasso_model.pkl         
+    ├── elastic_net_model.pkl   
+    ├── linear_model.py       
+    ├── ridge_model.py        
+    ├── lasso_model.py        
+    ├── elastic_net_model.py
+    ├── neural_network_model.py
+    ├── neural_network_model.pkl
+    ├── random_forest_model.py
+    ├── random_forest_model.pkl
+    ├── ridge_model.py
+    ├── ridge_model.pkl
+    ├── XGBoost_model.py
+    ├── XGBoost_model.py
+    ├── FuelConsumption.csv     
+    ├── templates/             
+    │   ├── index.html        
+    │   ├── compare.html       
+    │   ├── graph.html   
+    ├── static/                 
+    │   ├── style.css          
+    │   ├── script.js        
+    ├── README.md     
 ```
 
 ## Contributing
