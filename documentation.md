@@ -71,7 +71,7 @@ Once the application is running, users can:
 
 ## Documentation
 
-### Error Rate Reduction
+### Error Rate Reduction(below 5%) (before it was 20%-40%)
 
 To reduce error rates and improve prediction accuracy, the following strategies were implemented:
 
