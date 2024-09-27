@@ -1,5 +1,4 @@
-#app.py
-# Import necessary libraries
+# app.py
 import csv
 import numpy as np
 from flask import Flask, request, render_template
@@ -12,7 +11,7 @@ app = Flask(__name__)
 
 # Load the trained machine learning models from pickle files
 models = {}
-model_names = ['linear_model', 'ridge_model', 'lasso_model', 'elastic_net_model', 'neural_network_model', 'XGBoost_model', 'Random_Forest_model']
+model_names = ['linear_model', 'ridge_model', 'lasso_model', 'elastic_net_model', 'neural_network_model', 'xgboost_model', 'Random_Forest_model']
 
 # Load each model and store it in the 'models' dictionary
 for model_name in model_names:
@@ -37,18 +36,7 @@ def load_fuel_consumption_data():
             model = row['MODEL']
             fuel_consumption = float(row['FUELCONSUMPTION_CITY'])
 
-            # Check if the company (make) is in the dictionary
-            if company not in fuel_consumption_data:
-                fuel_consumption_data[company] = {}
-
-            # Check if the model is in the dictionary for this company
-            if model not in fuel_consumption_data[company]:
-                fuel_consumption_data[company][model] = []
-
-            # Append the fuel consumption value to the correct model list
-            fuel_consumption_data[company][model].append(fuel_consumption)
-
-            # Add the make to the set of makes
+            fuel_consumption_data.setdefault(company, {}).setdefault(model, []).append(fuel_consumption)
             makes.add(company)
 
     # Return the fuel consumption data and a sorted list of unique makes
@@ -88,9 +76,9 @@ def predict():
     final_features = [np.array(int_features)]
 
     closest_prediction = None
-    closest_difference = None  # To keep track of the closest difference
+    closest_difference = None
     best_model_name = None
-    error_percentage = None  # Initialize error_percentage to None
+    error_percentage = None
 
     # Check if the given input exists in the CSV file
     co2_emission_csv = None
@@ -98,12 +86,7 @@ def predict():
     with open('FuelConsumption.csv', 'r') as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
-            # Check if input values match those in the CSV
-            if (
-                float(row['ENGINESIZE']) == final_features[0][0]
-                and float(row['CYLINDERS']) == final_features[0][1]
-                and float(row['FUELCONSUMPTION_CITY']) == final_features[0][2]
-            ):
+            if all(float(row[key]) == final_features[0][i] for i, key in enumerate(['ENGINESIZE', 'CYLINDERS', 'FUELCONSUMPTION_CITY'])):
                 co2_emission_csv = float(row['CO2EMISSIONS'])
                 input_values_match_csv = True
                 break
@@ -121,7 +104,7 @@ def predict():
             if closest_difference is None or difference < closest_difference:
                 closest_difference = difference
                 closest_prediction = prediction
-                best_model_name = model_name  # Update the best model name
+                best_model_name = model_name
 
         # Calculate the error percentage based on the closest prediction and the actual CO2 value
         error_percentage = (abs(closest_prediction - co2_emission_csv) / co2_emission_csv) * 100
@@ -132,7 +115,7 @@ def predict():
         default_model = models[default_model_name]
         closest_prediction = default_model.predict(final_features)[0]
         best_model_name = default_model_name
-        error_percentage = np.random.uniform(0, 4)  # Random error rate below 5%
+        error_percentage = np.random.uniform(0, 4)
 
     # Render the prediction results, including the closest prediction and error percentage
     return render_template(
@@ -156,12 +139,7 @@ def graph_representation():
     # Get the selected make from the request
     selected_make = request.args.get('selected_make')
     
-    # Convert fuel consumption data to lists before passing to render_template
-    fuel_consumption_data_serializable = {
-        make: {
-            model: consumption.tolist() for model, consumption in models_data.items()
-        } for make, models_data in fuel_consumption_data.items()
-    }
+    fuel_consumption_data_serializable = {make: {model: consumption.tolist() for model, consumption in models_data.items()} for make, models_data in fuel_consumption_data.items()}
 
     # Render the graph template with fuel consumption data, makes, and the selected make
     return render_template('graph.html', fuel_consumption_data=fuel_consumption_data_serializable, makes=companies, selected_make=selected_make)
@@ -180,11 +158,7 @@ def get_unique_models():
             # Extract make and model information from the row
             make = row['MAKE']
             model = row['MODEL']
-            # Add make and model to the dictionary
-            if make not in makes_and_models:
-                makes_and_models[make] = [model]
-            else:
-                makes_and_models[make].append(model)
+            makes_and_models.setdefault(make, []).append(model)
 
     # Return the dictionary of unique makes and their associated models
     return makes_and_models
@@ -201,18 +175,8 @@ def get_model_specs(make, model):
         for row in reader:
             # Check if the row corresponds to the selected make and model
             if row['MAKE'] == make and row['MODEL'] == model:
-                # Assign specifications to the dictionary
-                specs = {
-                    'Make': row['MAKE'],
-                    'Model': row['MODEL'],
-                    'Fuel Consumption Comb (L/100 km)': row['FUELCONSUMPTION_CITY'],
-                    'CO2 Emissions (g/km)': row['CO2EMISSIONS'],
-                    'Engine Size (L)': row['ENGINESIZE'],
-                    'Cylinders': row['CYLINDERS'],
-                    'Vehicle Class': row['VEHICLECLASS'],
-                    'Transmission': row['TRANSMISSION']
-                }
-                break  # No need to continue once specs are found
+                specs = {'Make': row['MAKE'], 'Model': row['MODEL'], 'Fuel Consumption Comb (L/100 km)': row['FUELCONSUMPTION_CITY'], 'CO2 Emissions (g/km)': row['CO2EMISSIONS'], 'Engine Size (L)': row['ENGINESIZE'], 'Cylinders': row['CYLINDERS'], 'Vehicle Class': row['VEHICLECLASS'], 'Transmission': row['TRANSMISSION']}
+                break
 
     # Return the dictionary of model specifications
     return specs
