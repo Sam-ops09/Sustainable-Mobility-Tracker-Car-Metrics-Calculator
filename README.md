@@ -10,6 +10,52 @@ This is a Flask web application that predicts fuel consumption and compares vehi
 - Compares vehicle models based on CO2 emissions.
 - Visualizes data with line plots.
 
+## File Structure
+
+```
+Directory structure:
+└── Sam-ops09-Sustainable-Mobility-Tracker-Car-Metrics-Calculator/
+    ├── neural_network_model.py
+    ├── ridge_model.py
+    ├── xgboost_model.pkl
+    ├── Doc.md
+    ├── elastic_net_model.py
+    ├── .github/
+    │   └── dependabot.yml
+    ├── app.py
+    ├── neural_network_model.pkl
+    ├── Random_Forest_model.py
+    ├── elastic_net_model.pkl
+    ├── documentation.md
+    ├── linear_model.py
+    ├── FuelConsumption.csv
+    ├── requirements.txt
+    ├── ridge_model.pkl
+    ├── XGBoost_model.py
+    ├── random_forest_model.pkl
+    ├── linear_model.pkl
+    ├── Docs/
+    │   ├── Final year/
+    │   │   └── FIRST_review.pptx
+    │   ├── Sustainable Mobility Tracker.docx
+    │   ├── Final Review.pptx
+    │   ├── Copy of Query_Response_Sheet-Batch_ID.xlsx
+    │   ├── Minor project Report - Copy.docx
+    │   └── Minor project Report.docx
+    ├── README.md
+    ├── templates/
+    │   ├── index.html
+    │   ├── graph.html
+    │   └── compare.html
+    ├── lasso_model.py
+    ├── lasso_model.pkl
+    └── static/
+        └── css/
+            ├── graph.css
+            ├── compare.css
+            └── style.css
+
+```
 ## Prerequisites
 
 Before running this application, you need to have the following installed:
